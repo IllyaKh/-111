@@ -46,26 +46,27 @@ function scene:create( event )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 
-	local arButton = display.newImageRect(sceneGroup, "arrows.png", 250,250)
-	arButton.x = display.contentCenterX
-	arButton.y = 180
- 
-	local crButton = display.newImageRect(sceneGroup, "cursor.png", 250,250)
-	crButton.x = display.contentCenterX
-	crButton.y = 450
-	
-	local acButton = display.newImageRect(sceneGroup, "screen.png", 150,250)
-	acButton.x = display.contentCenterX
-	acButton.y = 700
 
-	
-	local ctrlButton = display.newText( sceneGroup, "Back", display.contentCenterX, 900, native.systemFont, 44 )
-    ctrlButton:setFillColor( 0, 0, 0 )
+
+
+
+	local ccButton = display.newText( sceneGroup, "Сontrols", display.contentCenterX, 200, mainFont, 44 )
+	ccButton:setFillColor( 255, 255, 0 )
+
+	local arButton = display.newText( sceneGroup, "Arrows", display.contentCenterX, 350, mainFont, 37 )
+    arButton:setFillColor( 255, 255, 0 )
+	local crButton = display.newText( sceneGroup, "Touchscreen", display.contentCenterX,450, mainFont, 37 )
+	crButton:setFillColor( 255, 255, 0 )
+	local acButton = display.newText( sceneGroup, "Accelerometer", display.contentCenterX, 550, mainFont, 37 )
+	acButton:setFillColor( 255, 255, 0 )
+	local ctrlButton = display.newText( sceneGroup, "Back", display.contentCenterX, 700, mainFont, 44 )
+	ctrlButton:setFillColor( 255, 255, 0 )
+
 
 	arButton:addEventListener( "tap", arCon )
 	crButton:addEventListener( "tap", crCon )
 	acButton:addEventListener( "tap", acCon )
-	ctrlmuse = audio.loadStream( "audio/ctrlsound.wav")
+	ctrlmuse = audio.loadStream( "audio/settings.mp3")
 	ctrlButton:addEventListener( "tap", gotoSettings )
 end
 

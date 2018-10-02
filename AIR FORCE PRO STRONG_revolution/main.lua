@@ -9,7 +9,6 @@ ctrlType = 1
 levelEnemy = 1
 gamePaused = 1
 b1defeat = false
-b2defeat = false
 -- Hide status bar
 display.setStatusBar( display.HiddenStatusBar )
 

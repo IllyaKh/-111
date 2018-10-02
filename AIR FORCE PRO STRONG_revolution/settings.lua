@@ -89,7 +89,7 @@ function scene:create( event )
 	local ctrlButton = display.newText( sceneGroup, "Control", display.contentCenterX, 450, mainFont, 44 )
 	ctrlButton:setFillColor( 255, 255, 0 )
 	
-	setmuse = audio.loadStream( "audio/setsound.wav")
+	setmuse = audio.loadStream( "audio/settings.mp3")
 	mnButton:addEventListener( "tap", gotoMenu )
 	sndButtonp:addEventListener( "tap", sndlvlp )
 	sndButtonm:addEventListener( "tap", sndlvlm )

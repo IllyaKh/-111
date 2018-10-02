@@ -36,11 +36,18 @@ function scene:create( event )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 
-	local playButton = display.newText( sceneGroup, "Продовжити", display.contentCenterX, 700, native.systemFont, 44 )
-    playButton:setFillColor( 0.75, 0.78, 1 )
+	local title = display.newImageRect( sceneGroup, "title.png", 500, 80 )
+	title.x = display.contentCenterX
+	title.y = 200
+	local title_pro = display.newImageRect( sceneGroup, "title_pro.png", 150, 60 )
+	title_pro.x = display.contentCenterX + 200
+	title_pro.y = 270
+
+	local playButton = display.newText( sceneGroup, "Resume", display.contentCenterX, 360, mainFont, 35 )
+    playButton:setFillColor( 255, 255, 0 )
  
-	local mnButton = display.newText( sceneGroup, "Menu", display.contentCenterX, 810, native.systemFont, 44 )
-    mnButton:setFillColor( 0.75, 0.78, 1 )
+	local mnButton = display.newText( sceneGroup, "Menu", display.contentCenterX, 450,mainFont, 35 )
+    mnButton:setFillColor(255,255,0)
 	
 
 	mnButton:addEventListener( "tap", gotoMenu )

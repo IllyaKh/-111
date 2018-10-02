@@ -95,7 +95,7 @@ function scene:create( event )
 	local menuButton = display.newText( sceneGroup, "Back", display.contentCenterX, 810, mainFont, 44 )
     menuButton:setFillColor( 255, 255, 0  )
     menuButton:addEventListener( "tap", gotoMenu )
-	scoreSound = audio.loadStream("audio/Midnight-Crawlers_Looping.wav")
+	scoreSound = audio.loadStream("audio/high_sc.mp3")
 	end
 
 

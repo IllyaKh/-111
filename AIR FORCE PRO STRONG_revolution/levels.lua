@@ -98,9 +98,11 @@ function scene:create( event )
 	local mnButton = display.newText( sceneGroup, "Back", display.contentCenterX, 790, mainFont, 37 )
     mnButton:setFillColor( 255, 255, 0 )
  
-	ctrlmuse = audio.loadStream( "audio/ctrlsound.wav")
+	ctrlmuse = audio.loadStream( "audio/settings.mp3")
 	fiButton:addEventListener( "tap", filev )
-	seButton:addEventListener( "tap", selev )
+	if (b1defeat == true) then
+		seButton:addEventListener( "tap", selev )
+	end
 	thButton:addEventListener( "tap", thlev )
 	foButton:addEventListener( "tap", folev )
 	fivButton:addEventListener( "tap", fivlev )

@@ -53,7 +53,7 @@ function scene:create( event )
 	playButton:addEventListener( "tap", gotoLevels )
 	highScoresButton:addEventListener( "tap", gotoHighScores )
 	ctrlButton:addEventListener( "tap", gotoSettings )
-	menuSound = audio.loadStream( "audio/Escape_Looping.wav")
+	menuSound = audio.loadStream( "audio/setsound.mp3")
 end
 
 
