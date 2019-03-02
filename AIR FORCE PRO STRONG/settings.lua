@@ -74,21 +74,21 @@ function scene:create( event )
 	sndButtonp.isVisible = false
 	sndButtonp.isBodyActive = false
 	end
-	
-	
-	
+
+
+
 	local title = display.newImageRect( sceneGroup, "title.png", 500, 80 )
 	title.x = display.contentCenterX
 	title.y = 200
-	
+
 	local mnButton = display.newText( sceneGroup, "Back", display.contentCenterX, 540, mainFont, 44 )
-    mnButton:setFillColor( 255, 255, 0 )
+	mnButton:setFillColor( 255, 255, 0 )
 
 
-	
+
 	local ctrlButton = display.newText( sceneGroup, "Control", display.contentCenterX, 450, mainFont, 44 )
 	ctrlButton:setFillColor( 255, 255, 0 )
-	
+
 	setmuse = audio.loadStream( "audio/settings.mp3")
 	mnButton:addEventListener( "tap", gotoMenu )
 	sndButtonp:addEventListener( "tap", sndlvlp )
