@@ -3,6 +3,10 @@ local composer = require( "composer" )
 
 local scene = composer.newScene()
 
+local json = require( "json" )
+ 
+local filePath = system.pathForFile( "leven.json", system.DocumentsDirectory )
+
 
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
@@ -13,6 +17,55 @@ physics.start()
 physics.setGravity( 0, 0 )
 system.setAccelerometerInterval( 60)
 -- Configure image sheet
+local bs1S_info = require("anim.bs1S")
+local bs1S_sheet = graphics.newImageSheet("anim/bs1S.png",bs1S_info:getSheet())
+local bs1S_data =
+{
+	{
+		name = "active",
+		sheet = bs1S_sheet,
+		start = 1,
+		count = 2,
+		time = 200,
+		loopcount = 0
+
+	}
+
+}
+local bs2S_info = require("anim.bs2S")
+local bs2S_sheet = graphics.newImageSheet("anim/bs2S.png",bs2S_info:getSheet())
+local bs2S_data =
+{
+	{
+		name = "active",
+		sheet = bs2S_sheet,
+		start = 1,
+		count = 2,
+		time = 200,
+		loopcount = 0
+
+	}
+
+}
+
+
+local mn_info = require("anim.mn")
+local mn_sheet = graphics.newImageSheet("anim/mn.png",mn_info:getSheet())
+local mn_data =
+{
+    {
+        name = "active",
+        sheet = mn_sheet,
+        start = 1,
+        count = 2,
+        time = 200,
+        loopcount = 0
+
+    }
+
+}
+
+
 local sheetOptions =
 {
 	frames =
@@ -52,17 +105,38 @@ local sheetOptions =
 local objectSheet = graphics.newImageSheet( "gameObjects.png", sheetOptions )
 
 -- Initialize variables
-
+local bs1S
+local bs2S
+local bs3S
+local bs4S
+local bs5S
+local bs61S
+local bs62S
+local mn
+--ILLYA NEW VARIABLES UP
 local intervalShip=60
 local bdirection = 1
-local lives = 3
-local b1lives = 10
-local bactive = false
-local bs1S
-local score = 0
+local b1direction = 1
+local b2direction = 1
+local b1lives = 20
+local b2lives = 30
+local b3lives = 40
+local b4lives = 40
+local b5lives = 20
+local b6lives = 30
+local b7lives = 60
+local b1max = b1lives
+local b2max = b2lives
+local b3max = b3lives
+local b4max = b4lives
+local b5max = b5lives
+local b6max = b6lives
+local b7max = b7lives
+local b7speed = 3000
+local b61active = false
+local b62active = false
 local died = false
 local enemyShips = {}
-local shootEnemyShips = {}
 local whoCanShoot = {}
 local enemyBullets = {}
 local isInvisible = false
@@ -71,15 +145,18 @@ local isShield = false
 local velocityEnemy = 100
 local enemyFireTimer
 local bTimer
-local enemyTable = {}
+enemyTable = {}
 
+local levelText
 local ship
 local gameLoopTimer
 local bfLoopTimer
 local bmLoopTimer
 local livesText
 local scoreText
-
+local b1hb
+local lengthRect
+instat = 3
 
 local backGroup
 local mainGroup
@@ -107,6 +184,7 @@ local options = {
 	}
 }
 local function gotoPause()
+	gamePaused = 1
 	transition.pause("animationBlock")
 	composer.showOverlay("pause",options)
 end
@@ -116,8 +194,25 @@ function sleep(ms)
 	while os.clock()*1000-b <= ms do end
 end
 
-function create1BS()
+function levnum()
+	local levbutt = display.newText(uiGroup,"LEVEL #".. levelEnemy  , display.contentCenterX,450, mainFont, 37 )
+	levbutt:setFillColor( 255, 255, 0 )
+	levbutt.alpha=0
+			transition.to( levbutt, { alpha=1, time=1000,
+			onComplete = function()
+			transition.to( levbutt, { alpha=0, time=1000,
+			onComplete = function()
+			display.remove(levbutt)
+			end
+		} )
+			end,tag = "animationBlock"
+		} )
 
+
+end
+
+function create1BS()
+	bs1S.x = display.contentCenterX
 	for i = #enemyTable, 1, -1 do
 		local thisAsteroid = enemyTable[i]
 		display.remove( thisAsteroid )
@@ -125,29 +220,80 @@ function create1BS()
 	end
 		transition.to( bs1S, { y=200, time=2000,
 			onComplete = function()
-			end
+			end,tag = "animationBlock"
 		} )
 		bactive = true
 end
 
-function bMove()
+function create2BS()
+	bs2S.x = display.contentCenterX
+	for i = #enemyTable, 1, -1 do
+		local thisAsteroid = enemyTable[i]
+		display.remove( thisAsteroid )
+		table.remove( enemyTable, i )
+	end
+		transition.to( bs2S, { y=300, time=2000,
+			onComplete = function()
+			end,tag = "animationBlock"
+		} )
+		bactive = true
+end
+
+function b1Move()
 	if (bactive == true) then
 		bdirection= bdirection+1
 		if (math.fmod(bdirection, 2) == 0) then
 			transition.to( bs1S, { x=display.contentWidth-200, time=2000,
 				onComplete = function()
-				end
+				end,tag = "animationBlock"
 			} )	
 			else
 			transition.to( bs1S, { x=200, time=2000,
 				onComplete = function()
-				end
+				end,tag = "animationBlock"
+			} )	
+		end
+	end
+	if(bactive == false) then
+		display.remove(b1hb)
+	end
+end
+
+
+
+function b2Move()
+	if (bactive == true) then
+		bdirection= math.random(1,4)
+		if (bdirection == 1) then
+			transition.to( bs2S, { x=display.contentWidth-200, time=2500,
+				onComplete = function()
+				end,tag = "animationBlock"
+			} )	
+		end
+		if (bdirection == 2) then
+			transition.to( bs2S, { x=200, time=2500,
+				onComplete = function()
+				end,tag = "animationBlock"
+			} )	
+		end
+		if (bdirection == 3) then
+			transition.to( bs2S, { y = 400, time=2500,
+				onComplete = function()
+				end,tag = "animationBlock"
+			} )	
+		end
+		if (bdirection == 4) then
+			transition.to( bs2S, { y=200, time=2500,
+				onComplete = function()
+				end,tag = "animationBlock"
 			} )	
 		end
 	end
 end
 
-function bFire()
+
+
+function b1Fire()
 	if (died == false) then
 		if (bactive == true) then
 			if (gamePaused == 0 ) then
@@ -165,9 +311,88 @@ function bFire()
 	end
 end
 
-function bLoop()
-	bFire()
-	bMove()
+
+function bFire()
+	if (died == false) then
+		if (bactive == true) then
+			if (gamePaused == 0 ) then
+				local BossBullet1 = display.newImageRect( mainGroup, "laser.png", 75 , 145 )
+				physics.addBody( BossBullet1, "dynamic", { isSensor=true } )
+				BossBullet1.isBullet = true
+				BossBullet1.myName = "enemyBullet"
+				BossBullet1.x = bs3S.x+30
+				BossBullet1.y = bs3S.y
+					transition.to( BossBullet1, { y = (display.contentHeight+300) , time=2000,
+					onComplete = function() display.remove( BossBullet1 ) end,tag = "animationBlock"
+				} )
+				
+				local BossBullet2 = display.newImageRect( mainGroup, "laser.png", 75 , 145 )
+				physics.addBody( BossBullet2, "dynamic", { isSensor=true } )
+				BossBullet2.isBullet = true
+				BossBullet2.myName = "enemyBullet"
+				BossBullet2.x = bs3S.x-30
+				BossBullet2.y = bs3S.y
+					transition.to( BossBullet2, { y = (display.contentHeight+300) , time=2000,
+					onComplete = function() display.remove( BossBullet2 ) end,tag = "animationBlock"
+				} )
+			end
+		end
+	end
+end
+
+function b3Fire()
+
+			timer.performWithDelay(300,bFire,3)
+
+
+end
+
+function b4Fire()
+	if (died == false) then
+		if (bactive == true) then
+			if (gamePaused == 0 ) then
+				local BossBullet1 = display.newImageRect( mainGroup, "laser.png", 75 , 145 )
+				physics.addBody( BossBullet1, "dynamic", { isSensor=true } )
+				BossBullet1.isBullet = true
+				BossBullet1.myName = "enemyBullet"
+				BossBullet1.x = bs4S.x-20
+				BossBullet1.y = bs4S.y
+					transition.to( BossBullet1, { y = (display.contentHeight+300) , time=3000,
+					onComplete = function() display.remove( BossBullet1 ) end,tag = "animationBlock"
+				} )
+				
+				local BossBullet2 = display.newImageRect( mainGroup, "laser.png", 75 , 145 )
+				physics.addBody( BossBullet2, "dynamic", { isSensor=true } )
+				BossBullet2.isBullet = true
+				BossBullet2.myName = "enemyBullet"
+				BossBullet2.x = bs4S.x
+				BossBullet2.y = bs4S.y
+					transition.to( BossBullet2, { y = (display.contentHeight+300), x = bs4S.x+400 , time=3000,
+					onComplete = function() display.remove( BossBullet2 ) end,tag = "animationBlock"
+				} )
+				
+				local BossBullet3 = display.newImageRect( mainGroup, "laser.png", 75 , 145 )
+				physics.addBody( BossBullet3, "dynamic", { isSensor=true } )
+				BossBullet3.isBullet = true
+				BossBullet3.myName = "enemyBullet"
+				BossBullet3.x = bs4S.x
+				BossBullet3.y = bs4S.y
+					transition.to( BossBullet3, { y = (display.contentHeight+300), x = bs4S.x-400 , time=3000,
+					onComplete = function() display.remove( BossBullet3 ) end,tag = "animationBlock"
+				} )
+				
+				local BossBullet4 = display.newImageRect( mainGroup, "laser.png", 75 , 145 )
+				physics.addBody( BossBullet4, "dynamic", { isSensor=true } )
+				BossBullet4.isBullet = true
+				BossBullet4.myName = "enemyBullet"
+				BossBullet4.x = bs4S.x+20
+				BossBullet4.y = bs4S.y
+					transition.to( BossBullet4, { y = (display.contentHeight+300), time=3000,
+					onComplete = function() display.remove( BossBullet3 ) end,tag = "animationBlock"
+				} )
+			end
+		end
+	end
 end
 
 local function createEnemyShip()
@@ -176,7 +401,6 @@ local function createEnemyShip()
 		table.insert( enemyTable, newEnemy )
 		physics.addBody( newEnemy, "dynamic", { radius=40, bounce = 10 } )
 		newEnemy.myName = "asteroid"
-		table.insert( shootEnemyShips, newEnemy )
 
 		if ( levelEnemy == 1) then
 
@@ -185,24 +409,21 @@ local function createEnemyShip()
 
 				newEnemy.x = math.random( display.contentWidth )
 				newEnemy.y =-100
-				newEnemy:setLinearVelocity( 0, velocityEnemy )
+				transition.to( newEnemy, { y=display.contentHeight + 200, time=4000,
+				onComplete = function()
+				end,tag = "animationBlock"
+		} )
 
 				end
 
 		elseif ( levelEnemy == 2) then
 			newEnemy.x = math.random( display.contentWidth )
 			newEnemy.y = -60
-			newEnemy:setLinearVelocity( 0, velocityEnemy )
-		elseif ( levelEnemy == 3) then
-			newEnemy.x = math.random( display.contentWidth )
-			newEnemy.y = -60
-			newEnemy:setLinearVelocity( 0, velocityEnemy )
-		elseif ( levelEnemy == 4) then
-			newEnemy.x = math.random( display.contentWidth )
-			newEnemy.y = -60
-			newEnemy:setLinearVelocity( 0, velocityEnemy )
-
-		end
+			transition.to( newEnemy, { y=display.contentHeight + 200, time=4000,
+				onComplete = function()
+				end,tag = "animationBlock"
+			})
+	
 	end
 end
 function levelComplete()
@@ -210,21 +431,24 @@ function levelComplete()
 end
 
 function fireEnemyBullet()
-	if (gamePaused == 0 ) then
-		if(#shootEnemyShips > 0) then
-			local randomIndex = math.random(#shootEnemyShips)
-			local randomEnemy = shootEnemyShips[randomIndex]
-			
-			local tempEnemyBullet = display.newImageRect( mainGroup, "laser.png", 40 , 70 )
-			physics.addBody( tempEnemyBullet, "dynamic", { isSensor=true } )
-			tempEnemyBullet.isBullet = true
-			tempEnemyBullet.myName = "enemyBullet"
-			tempEnemyBullet.x = randomEnemy.x
-			tempEnemyBullet.y = randomEnemy.y
-				transition.to( tempEnemyBullet, { y= (display.contentWidth+300), time=1000,
-				onComplete = function() display.remove( tempEnemyBullet ) end,tag = "animationBlock"
-			} )
-		end
+	if (died == false) then
+		if (gamePaused == 0 ) then
+			if (bactive == false)then
+				if(#enemyTable > 0) then
+					local randomIndex = math.random(#enemyTable)
+					local randomEnemy = enemyTable[randomIndex]
+					local tempEnemyBullet = display.newImageRect( mainGroup, "laser.png", 40 , 70 )
+					physics.addBody( tempEnemyBullet, "dynamic", { isSensor=true } )
+					tempEnemyBullet.isBullet = true
+					tempEnemyBullet.myName = "enemyBullet"
+					tempEnemyBullet.x = randomEnemy.x
+					tempEnemyBullet.y = randomEnemy.y
+						transition.to( tempEnemyBullet, { y= (display.contentWidth+300), time=1000,
+						onComplete = function() display.remove( tempEnemyBullet ) end,tag = "animationBlock"
+					} )
+				end
+			end
+	end
 	end
 end
 	local function fireLaser()
@@ -323,6 +547,8 @@ end
 			if (died==false) then
 				fireLaser()
 			end
+
+
 			-- Remove asteroids which have drifted off screen
 			for i = #enemyTable, 1, -1 do
 				local thisAsteroid = enemyTable[i]
@@ -351,19 +577,27 @@ end
 			onComplete = function()
 				ship.isBodyActive = true
 				died = false
-			end
+			end,tag = "animationBlock"
 		} )
 	end
 
 
 	local function endGameLoose()
+
 		composer.setVariable( "finalScore", score )
-		composer.gotoScene( "highscores", { time=800, effect="crossFade" } )
+		composer.gotoScene( "lose", { time=800, effect="crossFade" } )
 	end
 	
 	local function endGameWin()
-		b1defeat = true
-		composer.gotoScene( "levels", { time=800, effect="crossFade" } )
+		bactive = false
+	 	levelEnemy = levelEnemy+1
+		transition.pause("animationBlock")
+		print("curlevelEnemy endgame :"..levelEnemy)
+	    local file = io.open( filePath, "w" )
+		if file then
+			file:write( json.encode( levelEnemy ) )
+		end
+		composer.gotoScene( "victory", { time=800, effect="crossFade" } )
 	end
 
 
@@ -390,54 +624,133 @@ end
 					score = score + 50
 					scoreText.text = "Score: " .. score
 					if (levelEnemy == 1) then
-						if (score == 300) then
+						if (score - tempscore == 300) then
 							create1BS()
+							
 						end
 					end
+					if (levelEnemy == 2) then
+						if (score - tempscore == 300) then
+							create2BS()
+						end
+					end
+
 				end
 				if ( ( obj1.myName == "ship" and obj2.myName == "asteroid" ) or
 						( obj1.myName == "asteroid" and obj2.myName == "ship" ) or
 						( obj1.myName == "ship" and obj2.myName == "enemyBullet") or
 							( obj1.myName == "enemyBullet" and obj2.myName == "ship"))
 				then
-					if ( died == false ) then
+					if ( died == false ) then			
 						died = true
 						audio.play( explosionSound )
 						-- Update lives
 						lives = lives - 1
 						display.remove( hb )
-                        if(lives == 3) then
-                            hb = display.newImageRect( uiGroup, "imgcontent/hp1.png", 200, 200 )
-                            hb.x = 190
-                            hb.y = 80
-                        elseif(lives == 2) then
-                            hb = display.newImageRect( uiGroup, "imgcontent/hp2.png", 200, 200 )
-                            hb.x = 190
-                            hb.y = 80
-                        elseif(lives == 1) then
-                             hb = display.newImageRect( uiGroup, "imgcontent/hp3.png", 200, 200 )
-                            hb.x = 190
-                            hb.y = 80
-
+						if (levelEnemy == 7) then
+							b7lives = b7max
+						end
+				        if(lives == 3) then
+							hb = display.newImageRect( uiGroup, "imgcontent/hp1.png", 200,200 )
+							hb.x = 190
+							hb.y = 80
+						elseif(lives == 2) then
+							hb = display.newImageRect( uiGroup, "imgcontent/hp2.png", 200,200 )
+							hb.x = 190
+							hb.y = 80
+						elseif(lives == 1) then
+							hb = display.newImageRect( uiGroup, "imgcontent/hp3.png", 200,200 )
+							hb.x = 190
+							hb.y = 80
 						end
 						if ( lives == 0 ) then
+							display.remove(b1hb)
 							display.remove( ship )
 							timer.performWithDelay( 2000, endGameLoose )
 						else
 							ship.alpha = 0
-							timer.performWithDelay( 1000, restoreShip )
+							timer.performWithDelay( 500, restoreShip )
 						end
 					end
 				end
 				if( (obj1.myName == "laser" and obj2.myName == "boss") or
 				( obj1.myName == "boss" and obj2.myName == "laser")) then
 					audio.play( explosionSound )
-					b1lives = b1lives - 1
-					display.remove( laser )
-					if ( b1lives == 0 or b1lives<0 ) then
-						display.remove( bs1S )
-						timer.performWithDelay( 2000, endGameWin )
+					if (obj1.myName == "laser")  then
+							display.remove( obj1 )
+						end
+						if (obj2.myName == "laser")  then
+							display.remove( obj2 )
+						end
+					if (levelEnemy == 1) then
+						b1lives = b1lives - 0.5
+						if(b1lives>0) then
+							display.remove(b1hb)
+							lengthRect = (display.contentWidth*b1lives)/b1max
+							b1hb = display.newRect(uiGroup,lengthRect/2,10,lengthRect,20)
+							b1hb:setFillColor(0, 255, 0)
+							if(b1lives>b1max/2) then
+								b1hb:setFillColor(0,255,0)
+
+							elseif(b1lives<=b1max/2 and b1lives>=(b1max/2) - (b1max/3)) then
+								b1hb:setFillColor(255, 237, 0)
+							elseif(b1lives<b1max/3) then
+								b1hb:setFillColor(255, 0, 0)
+							end
+
+						elseif(b1lives==0 or b1lives< 0) then
+							display.remove(b1hb)
+						end
+						if (obj1.myName == "laser")  then
+							display.remove( obj1 )
+						end
+						if (obj2.myName == "laser")  then
+							display.remove( obj2 )
+						end
+						if ( b1lives == 0 or b1lives<0 ) then
+							display.remove(b1hb)
+							display.remove( bs1S )
+							b1defeat = true
+							if (levelEnemy==8) then
+								create2BS()
+							end
+							if (levelEnemy==1) then
+								timer.performWithDelay( 100, endGameWin )
+							end
+						end
 					end
+					if (levelEnemy == 2) then
+						b2lives = b2lives - 0.5
+						if(b2lives>0) then
+							display.remove(b1hb)
+							lengthRect = (display.contentWidth*b2lives)/b2max
+							b1hb = display.newRect(uiGroup,lengthRect/2,10,lengthRect,20)
+							b1hb:setFillColor(0, 255, 0)
+							if(b2lives>b2max/2) then
+								b1hb:setFillColor(0,255,0)
+
+							elseif(b2lives<=b2max/2 and b2lives>=(b2max/2) - (b2max/3)) then
+								b1hb:setFillColor(255, 237, 0)
+							elseif(b2lives<b2max/3) then
+								b1hb:setFillColor(255, 0, 0)
+							end
+
+						elseif(b2lives==0 or b2lives< 0) then
+							display.remove(b1hb)
+						end
+						if ( b2lives == 0 or b2lives<0 ) then
+							display.remove(b1hb)
+							display.remove( bs2S )
+							b2defeat = true
+							if (levelEnemy==8) then
+								create3BS()
+							end
+							if (levelEnemy == 2) then
+								timer.performWithDelay( 100, endGameWin )
+							end
+						end
+					end
+
 				end
 			end
 		end
@@ -473,17 +786,36 @@ end
 		local runtime = 0
 		local scrollSpeed = 1.4
 		local function addScrollableBg()
-			local bgImage = { type="image", filename="background.png" }
+
+			local bgImage = { type="image", filename="background1.png" }
+			local bgImage2 = { type="image", filename="background2.png" }
+			local bgImage3 = { type="image", filename="background3.png" }
 
 			-- Add First bg image
 			bg1 = display.newRect(backGroup,0, 0, display.contentWidth, display.actualContentHeight)
 			bg1.fill = bgImage
+			if(levelEnemy>=3 and levelEnemy<=5) then
+
+				bg1.fill  = bgImage2
+
+			elseif(levelEnemy>=6 and levelEnemy<=8) then
+
+				bg1.fill  = bgImage3
+			end
 			bg1.x = display.contentCenterX
 			bg1.y = display.contentCenterY
 
 			-- Add Second bg image
 			bg2 = display.newRect(backGroup,0, 0, display.contentWidth, display.actualContentHeight)
 			bg2.fill = bgImage
+			if(levelEnemy>=3 and levelEnemy<=5) then
+
+				bg2.fill  = bgImage2
+
+			elseif(levelEnemy>=6 and levelEnemy<=8) then
+
+				bg2.fill  = bgImage3
+			end
 			bg2.x = display.contentCenterX
 			bg2.y = display.contentCenterY - display.actualContentHeight
 		end
@@ -530,30 +862,65 @@ end
 			rarr:addEventListener("touch", moveRight)
 			larr:addEventListener("touch", moveLeft)
 		end
+		
+        if(lives == 3) then
+			hb = display.newImageRect( uiGroup, "imgcontent/hp1.png", 200,200 )
+			hb.x = 190
+			hb.y = 80
+		elseif(lives == 2) then
+			hb = display.newImageRect( uiGroup, "imgcontent/hp2.png", 200,200 )
+			hb.x = 190
+			hb.y = 80
+        elseif(lives == 1) then
+			hb = display.newImageRect( uiGroup, "imgcontent/hp3.png", 200,200 )
+			hb.x = 190
+			hb.y = 80
+		end
+		local pauseButton = display.newImageRect(mainGroup,"stop.png",80,80)
+		pauseButton.x = display.contentWidth-150
+		pauseButton.y = 100
 
-		local pauseButton = display.newImageRect(mainGroup,"stop.png",50,50)
-		pauseButton.x = display.contentWidth-130
-		pauseButton.y = 37
-
-		ship = display.newImageRect( sceneGroup, "blacok.png", 128, 128 )
+		ship = display.newSprite( sceneGroup, mn_sheet, mn_data)
+        ship:scale(2,2)
 		ship.x = display.contentCenterX
 		ship.y = display.contentHeight - 100
-		physics.addBody( ship, { radius=60, isSensor=true } )
+		physics.addBody( ship, { radius=30, isSensor=true } )
 		ship.myName = "ship"
+        ship:setSequence("active")
+        ship:play()
 		
-		bs1S = display.newImageRect( mainGroup, "bich.png", 256, 256 )
-		physics.addBody( bs1S, "dynamic", { radius=120, bounce = 10 } )
-		bs1S.myName = "boss"
-		bs1S.x = display.contentCenterX
-		bs1S.y = - 300
+		if (levelEnemy == 1) then
 
+			bs1S = display.newSprite( mainGroup, bs1S_sheet,bs1S_data)
+			bs1S:scale(4,4)
+			physics.addBody( bs1S, "dynamic", { radius=120, bounce = 0 } )
+			bs1S.myName = "boss"
+			bs1S.x = display.contentCenterX
+			bs1S.y = - 300
+			bs1S:setSequence("active")
+			bs1S:play()
+
+		end
+		if (levelEnemy == 2) then
+			bs2S = display.newSprite( mainGroup, bs2S_sheet,bs2S_data)
+			bs2S:scale(4,4)
+			physics.addBody( bs2S, "dynamic", { radius=120, bounce = 0 } )
+			bs2S.myName = "boss"
+			bs2S.x = display.contentCenterX
+			bs2S.y = - 300
+			bs2S:setSequence("active")
+			bs2S:play()
+		end
+
+
+		
 		-- Display lives and score
-         hb = display.newImageRect( uiGroup, "imgcontent/hp1.png", 200,200 )
-            hb.x = 190
-            hb.y = 80
+	--	hb = display.newImageRect( uiGroup, "imgcontent/hp1.png", 200,200 )
+	--	hb.x = 190
+	--	hb.y = 80
 
 		scoreText = display.newText( uiGroup, "Score:" .. score, 340, 35, mainFont, 20 )
-        scoreText:setFillColor(255,255,0)
+		scoreText:setFillColor(255,255,0)
 		explosionSound = audio.loadSound( "audio/explosion.wav" )
 		fireSound = audio.loadSound( "audio/fire.wav" )
 		musicTrack = audio.loadStream( "audio/main_track.mp3")
@@ -583,16 +950,32 @@ end
 			-- Code here runs when the scene is entirely on screen
 			physics.start()
 			Runtime:addEventListener( "collision", onCollision )
+			levnum()
 			gameLoopTimer = timer.performWithDelay( 500, gameLoop, 0 )
-			bfLoopTimer = timer.performWithDelay( 1500, bFire, 0 )
-			bmLoopTimer = timer.performWithDelay( 4000, bMove, 0 )
+			enemyFireTimer = timer.performWithDelay( 500, fireEnemyBullet, 0 )
+			if (levelEnemy==1) then
+				bfLoopTimer = timer.performWithDelay( 1500, b1Fire, 0 )
+				bmLoopTimer = timer.performWithDelay( 4000, b1Move, 0 )
+			if (b1defeat == true) then
+				timer.cancel(bfLoopTimer)
+				timer.cancel(bmLoopTimer)
+			end
+			end
+			if (levelEnemy==2) then
+				bfLoopTimer = timer.performWithDelay( 4000, b2Fire, 0 )
+				bmLoopTimer = timer.performWithDelay( 2000, b2Move, 0 )
+
+			end
+
+			
+			
+			
+			end
+			
+			
 			audio.play( musicTrack, { channel=1, loops=-1 } )
 	--		Runtime:addEventListener( "collision", onCollision )
-			if (bactive == false) then
-				enemyFireTimer = timer.performWithDelay(750, fireEnemyBullet, 0)
-			end
 		end
-	end
 
 
 	-- hide()
@@ -603,10 +986,13 @@ end
 
 		if ( phase == "will" ) then
 			-- Code here runs when the scene is on screen (but is about to go off screen)
+			if (levelEnemy ~= 8) then
+				timer.cancel(bfLoopTimer)
+				timer.cancel(bmLoopTimer)
+			end
 			timer.cancel( gameLoopTimer )
 			timer.cancel( enemyFireTimer )
-			timer.cancel(bfLoopTimer)
-			timer.cancel(bmLoopTimer)
+
 
 		elseif ( phase == "did" ) then
 			-- Code here runs immediately after the scene goes entirely off screen

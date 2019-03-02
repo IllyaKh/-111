@@ -41,27 +41,23 @@ function scene:create( event )
   
 	local sceneGroup = self.view
 	local sndGroup = self.view
-	
+
 	local background = display.newImageRect( sceneGroup, "background.png", 800, 1400 )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
-
-
-
 
 
 	local ccButton = display.newText( sceneGroup, "Сontrols", display.contentCenterX, 200, mainFont, 44 )
 	ccButton:setFillColor( 255, 255, 0 )
 
 	local arButton = display.newText( sceneGroup, "Arrows", display.contentCenterX, 350, mainFont, 37 )
-    arButton:setFillColor( 255, 255, 0 )
+	arButton:setFillColor( 255, 255, 0 )
 	local crButton = display.newText( sceneGroup, "Touchscreen", display.contentCenterX,450, mainFont, 37 )
 	crButton:setFillColor( 255, 255, 0 )
 	local acButton = display.newText( sceneGroup, "Accelerometer", display.contentCenterX, 550, mainFont, 37 )
 	acButton:setFillColor( 255, 255, 0 )
 	local ctrlButton = display.newText( sceneGroup, "Back", display.contentCenterX, 700, mainFont, 44 )
 	ctrlButton:setFillColor( 255, 255, 0 )
-
 
 	arButton:addEventListener( "tap", arCon )
 	crButton:addEventListener( "tap", crCon )
