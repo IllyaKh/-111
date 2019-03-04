@@ -48,7 +48,86 @@ local bs2S_data =
 
 }
 
+local bs3S_info = require("anim.bs3S")
+local bs3S_sheet = graphics.newImageSheet("anim/bs3S.png",bs3S_info:getSheet())
+local bs3S_data =
+{
+	{
+		name = "active",
+		sheet = bs3S_sheet,
+		start = 1,
+		count = 2,
+		time = 200,
+		loopcount = 0
 
+	}
+
+}
+
+
+local bs4S_info = require("anim.bs4S")
+local bs4S_sheet = graphics.newImageSheet("anim/bs4S.png",bs4S_info:getSheet())
+local bs4S_data =
+{
+	{
+		name = "active",
+		sheet = bs4S_sheet,
+		start = 1,
+		count = 2,
+		time = 200,
+		loopcount = 0
+
+	}
+
+}
+
+
+local bs5S_info = require("anim.bs5S")
+local bs5S_sheet = graphics.newImageSheet("anim/bs5S.png",bs5S_info:getSheet())
+local bs5S_data =
+{
+	{
+		name = "active",
+		sheet = bs5S_sheet,
+		start = 1,
+		count = 2,
+		time = 200,
+		loopcount = 0
+
+	}
+
+}
+local bs6S_info = require("anim.bs6S")
+local bs6S_sheet = graphics.newImageSheet("anim/bs6S.png",bs6S_info:getSheet())
+local bs6S_data =
+{
+	{
+		name = "active",
+		sheet = bs6S_sheet,
+		start = 1,
+		count = 2,
+		time = 200,
+		loopcount = 0
+
+	}
+
+}
+
+local bs7S_info = require("anim.bs7S")
+local bs7S_sheet = graphics.newImageSheet("anim/bs7S.png",bs7S_info:getSheet())
+local bs7S_data =
+{
+	{
+		name = "active",
+		sheet = bs7S_sheet,
+		start = 1,
+		count = 2,
+		time = 200,
+		loopcount = 0
+
+	}
+
+}
 local mn_info = require("anim.mn")
 local mn_sheet = graphics.newImageSheet("anim/mn.png",mn_info:getSheet())
 local mn_data =
@@ -239,6 +318,88 @@ function create2BS()
 		bactive = true
 end
 
+function create3BS()
+	bs3S.x = display.contentCenterX
+	for i = #enemyTable, 1, -1 do
+		local thisAsteroid = enemyTable[i]
+		display.remove( thisAsteroid )
+		table.remove( enemyTable, i )
+	end
+		transition.to( bs3S, { y=200, time=2000,
+			onComplete = function()
+			end,tag = "animationBlock"
+		} )
+		bactive = true
+end
+
+function create4BS()
+	bs4S.x = display.contentCenterX
+	for i = #enemyTable, 1, -1 do
+		local thisAsteroid = enemyTable[i]
+		display.remove( thisAsteroid )
+		table.remove( enemyTable, i )
+	end
+		transition.to( bs4S, { y=200, time=2000,
+			onComplete = function()
+			end,tag = "animationBlock"
+		} )
+		bactive = true
+end
+
+function create5BS()
+	bs5S.x = display.contentCenterX
+	for i = #enemyTable, 1, -1 do
+		local thisAsteroid = enemyTable[i]
+		display.remove( thisAsteroid )
+		table.remove( enemyTable, i )
+	end
+		transition.to( bs5S, { y=200, time=2000,
+			onComplete = function()
+			end,tag = "animationBlock"
+		} )
+		bactive = true
+end
+
+function create6BS()
+	bs61S.x = display.contentCenterX
+	bs62S.x = display.contentCenterX
+	for i = #enemyTable, 1, -1 do
+		local thisAsteroid = enemyTable[i]
+		display.remove( thisAsteroid )
+		table.remove( enemyTable, i )
+	end
+		transition.to( bs61S, { y=300, time=2000,
+			onComplete = function()
+			transition.to( bs61S, { x=display.contentWidth-200, time=2000,
+				onComplete = function()
+			end,tag = "animationBlock"
+		} )
+		end})
+		b61active = true
+		transition.to( bs62S, { y=100, time=2000,
+			onComplete = function()
+			transition.to( bs62S, { x=200, time=2000,
+				onComplete = function()
+			end,tag = "animationBlock"
+		} )
+		end})
+		bactive = true
+end
+
+function create7BS()
+	bs7S.x = display.contentCenterX
+	for i = #enemyTable, 1, -1 do
+		local thisAsteroid = enemyTable[i]
+		display.remove( thisAsteroid )
+		table.remove( enemyTable, i )
+	end
+		transition.to( bs7S, { y=200, time=2000,
+			onComplete = function()
+			end,tag = "animationBlock"
+		} )
+		bactive = true
+end
+
 function b1Move()
 	if (bactive == true) then
 		bdirection= bdirection+1
@@ -259,7 +420,25 @@ function b1Move()
 	end
 end
 
-
+function b7Move()
+	if (bactive == true) then
+		bdirection= bdirection+1
+		if (math.fmod(bdirection, 2) == 0) then
+			transition.to( bs7S, { x=display.contentWidth-200, time=2000,
+				onComplete = function()
+				end,tag = "animationBlock"
+			} )	
+			else
+			transition.to( bs7S, { x=200, time=2000,
+				onComplete = function()
+				end,tag = "animationBlock"
+			} )	
+		end
+	end
+	if(bactive == false) then
+		display.remove(b1hb)
+	end
+end
 
 function b2Move()
 	if (bactive == true) then
@@ -291,7 +470,182 @@ function b2Move()
 	end
 end
 
+function b7Inv()
+	b7lives = b7lives-0.5
+		transition.to( bs7S, { alpha=0.5, time=500,
+			onComplete = function()
+				bs7S.isBodyActive = false
+					transition.to( bs7S, { alpha=1, time=15000,
+			onComplete = function()
+				bs7S.isBodyActive = true
+			end,tag = "animationBlock"
+		} )
+		end,tag = "animationBlock"
+		} )
+	end
 
+function b7Fire()
+	if (died == false) then
+		if (bactive == true) then
+			if (gamePaused == 0 ) then
+				local BossBullet1 = display.newImageRect( mainGroup, "laser.png", 75 , 145 )
+				physics.addBody( BossBullet1, "dynamic", { isSensor=true } )
+				BossBullet1.isBullet = true
+				BossBullet1.myName = "enemyBullet"
+				BossBullet1.x = bs7S.x
+				BossBullet1.y = bs7S.y
+					transition.to( BossBullet1, { y = (display.contentHeight+300) , time=3000,
+					onComplete = function() display.remove( BossBullet1 ) end,tag = "animationBlock"
+				} )
+				
+				local BossBullet2 = display.newImageRect( mainGroup, "laser.png", 75 , 145 )
+				physics.addBody( BossBullet2, "dynamic", { isSensor=true } )
+				BossBullet2.isBullet = true
+				BossBullet2.myName = "enemyBullet"
+				BossBullet2.x = bs7S.x
+				BossBullet2.y = bs7S.y
+					transition.to( BossBullet2, { y = (display.contentHeight+300), x = bs7S.x+300 , time=3000,
+					onComplete = function() display.remove( BossBullet2 ) end,tag = "animationBlock"
+				} )
+				
+				local BossBullet3 = display.newImageRect( mainGroup, "laser.png", 75 , 145 )
+				physics.addBody( BossBullet3, "dynamic", { isSensor=true } )
+				BossBullet3.isBullet = true
+				BossBullet3.myName = "enemyBullet"
+				BossBullet3.x = bs7S.x
+				BossBullet3.y = bs7S.y
+					transition.to( BossBullet3, { y = (display.contentHeight+300), x = bs7S.x-300 , time=3000,
+					onComplete = function() display.remove( BossBullet3 ) end,tag = "animationBlock"
+				} )
+			end
+		end
+	end
+end
+
+function b3Inv()
+	instat = instat+1
+	if (math.fmod (instat,2) == 0) then
+		transition.to( bs3S, { alpha=1, time=500,
+			onComplete = function()
+				bs3S.isBodyActive = true
+			end,tag = "animationBlock"
+		} )
+	else
+		transition.to( bs3S, { alpha=0, time=500,
+			onComplete = function()
+				bs3S.isBodyActive = false
+			end,tag = "animationBlock"
+		} )
+	end
+end
+function b4Inv()
+	instat = instat+1
+	if (math.fmod (instat,2) == 0) then
+		transition.to( bs4S, { alpha=1, time=500,
+			onComplete = function()
+				bs4S.isBodyActive = true
+			end,tag = "animationBlock"
+		} )
+	else
+		transition.to( bs4S, { alpha=0, time=500,
+			onComplete = function()
+				bs4S.isBodyActive = false
+			end,tag = "animationBlock"
+		} )
+	end
+end
+function b5regen()
+	if (b5lives<b5max+4)then
+		b5lives = b5lives+4
+	end
+end
+function b5Move()
+	if (bactive == true)then
+		transition.to( bs5S, { y = 500, time=1000,
+		onComplete = function()
+			transition.to( bs5S, { x = display.contentWidth - 200, time=1000,
+			onComplete = function()
+				transition.to( bs5S, { y = 200, time=1000,
+				onComplete = function()
+					transition.to( bs5S, { x = 200, time=1000,
+					onComplete = function()
+						transition.to( bs5S, { y = 500, time=1000,
+						onComplete = function()
+							transition.to( bs5S, { x = display.contentCenterX, time=1000,
+							onComplete = function()
+								transition.to( bs5S, { y = 300, time=1000,
+								onComplete = function()
+		end} )
+		end} )
+		end} )
+		end} )
+		end} )
+		end} )
+		end,tag = "animationBlock"} )
+	end	
+end
+
+function b3Move()
+	if (bactive == true) then
+		bdirection= bdirection+1
+		if (math.fmod(bdirection, 2) == 0) then
+			transition.to( bs3S, { x=display.contentWidth-200, time=2000,
+				onComplete = function()
+				end,tag = "animationBlock"
+			} )	
+			else
+			transition.to( bs3S, { x=200, time=2000,
+				onComplete = function()
+				end,tag = "animationBlock"
+			} )	
+		end
+	end
+end
+
+function b4Move()
+	if (bactive == true) then
+		bdirection= bdirection+1
+		if (math.fmod(bdirection, 2) == 0) then
+			transition.to( bs4S, { x=display.contentWidth-200, time=2000,
+				onComplete = function()
+				end,tag = "animationBlock"
+			} )	
+			else
+			transition.to( bs4S, { x=200, time=2000,
+				onComplete = function()
+				end,tag = "animationBlock"
+			} )	
+		end
+	end
+end
+
+function b5Fire()
+	if (died == false) then
+		if (bactive == true) then
+			if (gamePaused == 0 ) then
+				local BossBullet1 = display.newImageRect( mainGroup, "laser.png", 75 , 145 )
+				physics.addBody( BossBullet1, "dynamic", { isSensor=true } )
+				BossBullet1.isBullet = true
+				BossBullet1.myName = "enemyBullet"
+				BossBullet1.x = bs5S.x-30
+				BossBullet1.y = bs5S.y
+					transition.to( BossBullet1, { y = (display.contentHeight+300) , time=3000,
+					onComplete = function() display.remove( BossBullet1 ) end,tag = "animationBlock"
+				} )
+				
+				local BossBullet2 = display.newImageRect( mainGroup, "laser.png", 75 , 145 )
+				physics.addBody( BossBullet2, "dynamic", { isSensor=true } )
+				BossBullet2.isBullet = true
+				BossBullet2.myName = "enemyBullet"
+				BossBullet2.x = bs5S.x+30
+				BossBullet2.y = bs5S.y
+					transition.to( BossBullet2, { y = (display.contentHeight+300) , time=3000,
+					onComplete = function() display.remove( BossBullet2 ) end,tag = "animationBlock"
+				} )
+			end
+		end
+	end
+end
 
 function b1Fire()
 	if (died == false) then
@@ -311,6 +665,132 @@ function b1Fire()
 	end
 end
 
+function b61Fire()
+	if (died == false) then
+		if (bactive == true) then
+			if (gamePaused == 0 ) then
+				local tempBossBullet = display.newImageRect( mainGroup, "laser.png", 75 , 145 )
+				physics.addBody( tempBossBullet, "dynamic", { isSensor=true } )
+				tempBossBullet.isBullet = true
+				tempBossBullet.myName = "enemyBullet"
+				tempBossBullet.x = bs61S.x
+				tempBossBullet.y = bs61S.y
+					transition.to( tempBossBullet, { y = (display.contentHeight+300) , time=2000,
+					onComplete = function() display.remove( tempBossBullet ) end,tag = "animationBlock"
+				} )
+			end
+		end
+	end
+end
+
+
+
+function b62Fire()
+	if (died == false) then
+		if (bactive == true) then
+			if (gamePaused == 0 ) then
+				local tempBossBullet = display.newImageRect( mainGroup, "laser.png", 75 , 145 )
+				physics.addBody( tempBossBullet, "dynamic", { isSensor=true } )
+				tempBossBullet.isBullet = true
+				tempBossBullet.myName = "enemyBullet"
+				tempBossBullet.x = bs62S.x
+				tempBossBullet.y = bs62S.y
+					transition.to( tempBossBullet, { y = (display.contentHeight+300) , time=2000,
+					onComplete = function() display.remove( tempBossBullet ) end,tag = "animationBlock"
+				} )
+			end
+		end
+	end
+end
+
+function b6Fire()
+if(b61active == true) then
+b61Fire()
+end
+b62Fire()
+end
+
+function b61Move()
+	if (died == false) then
+		if (b61active == true) then
+				transition.to( bs61S, { x=display.contentWidth-200, time=1500,
+					onComplete = function()
+									transition.to( bs61S, { x=200, time=1500,
+					onComplete = function()
+					end,tag = "animationBlock"
+				} )	
+				end,tag = "animationBlock"
+				} )	
+			end
+		end
+		if(bactive == false) then
+			display.remove(b1hb)
+		end
+end
+
+function b62Move()
+	if (died == false) then
+		if (bactive == true) then
+				transition.to( bs62S, { x=200, time=1500,
+					onComplete = function()					
+									transition.to( bs62S, { x=display.contentWidth-200, time=1500,
+					onComplete = function()
+					end,tag = "animationBlock"
+				} )	
+				end,tag = "animationBlock"
+				} )	
+			end
+		end
+		if(bactive == false) then
+			display.remove(b1hb)
+		end
+end
+
+function b6Move()
+if (bactive == true)then
+	if(b61active == true) then
+		b61Move()
+	end
+	b62Move()
+	end
+end
+function b2Fire()
+	if (died == false) then
+		if (bactive == true) then
+			if (gamePaused == 0 ) then
+				local BossBullet1 = display.newImageRect( mainGroup, "laser.png", 75 , 145 )
+				physics.addBody( BossBullet1, "dynamic", { isSensor=true } )
+				BossBullet1.isBullet = true
+				BossBullet1.myName = "enemyBullet"
+				BossBullet1.x = bs2S.x
+				BossBullet1.y = bs2S.y
+					transition.to( BossBullet1, { y = (display.contentHeight+300) , time=3000,
+					onComplete = function() display.remove( BossBullet1 ) end,tag = "animationBlock"
+				} )
+				
+				local BossBullet2 = display.newImageRect( mainGroup, "laser.png", 75 , 145 )
+				physics.addBody( BossBullet2, "dynamic", { isSensor=true } )
+				BossBullet2.isBullet = true
+				BossBullet2.myName = "enemyBullet"
+				BossBullet2.x = bs2S.x
+				BossBullet2.y = bs2S.y
+					transition.to( BossBullet2, { y = (display.contentHeight+300), x = bs2S.x+300 , time=3000,
+					onComplete = function() display.remove( BossBullet2 ) end,tag = "animationBlock"
+				} )
+				
+				local BossBullet3 = display.newImageRect( mainGroup, "laser.png", 75 , 145 )
+				physics.addBody( BossBullet3, "dynamic", { isSensor=true } )
+				BossBullet3.isBullet = true
+				BossBullet3.myName = "enemyBullet"
+				BossBullet3.x = bs2S.x
+				BossBullet3.y = bs2S.y
+					transition.to( BossBullet3, { y = (display.contentHeight+300), x = bs2S.x-300 , time=3000,
+					onComplete = function() display.remove( BossBullet3 ) end,tag = "animationBlock"
+				} )
+			end
+		end
+	end
+end
 
 function bFire()
 	if (died == false) then
@@ -423,7 +903,49 @@ local function createEnemyShip()
 				onComplete = function()
 				end,tag = "animationBlock"
 			})
-	
+		elseif ( levelEnemy == 3) then
+			newEnemy.x = math.random( display.contentWidth )
+			newEnemy.y = -60
+			transition.to( newEnemy, { y=display.contentHeight + 200, time=4000,
+				onComplete = function()
+				end,tag = "animationBlock"
+			})
+		elseif ( levelEnemy == 4) then
+			newEnemy.x = math.random( display.contentWidth )
+			newEnemy.y = -60
+			transition.to( newEnemy, { y=display.contentHeight + 200, time=4000,
+				onComplete = function()
+				end,tag = "animationBlock"
+			})
+		elseif ( levelEnemy == 5) then
+			newEnemy.x = math.random( display.contentWidth )
+			newEnemy.y = -60
+			transition.to( newEnemy, { y=display.contentHeight + 200, time=4000,
+				onComplete = function()
+				end,tag = "animationBlock"
+			})
+		elseif ( levelEnemy == 6) then
+			newEnemy.x = math.random( display.contentWidth )
+			newEnemy.y = -60
+			transition.to( newEnemy, { y=display.contentHeight + 200, time=4000,
+				onComplete = function()
+				end,tag = "animationBlock"
+			})
+		elseif ( levelEnemy == 7) then
+			newEnemy.x = math.random( display.contentWidth )
+			newEnemy.y = -60
+			transition.to( newEnemy, { y=display.contentHeight + 200, time=4000,
+				onComplete = function()
+				end,tag = "animationBlock"
+			})	
+		elseif ( levelEnemy == 8) then
+			newEnemy.x = math.random( display.contentWidth )
+			newEnemy.y = -60
+			transition.to( newEnemy, { y=display.contentHeight + 200, time=4000,
+				onComplete = function()
+				end,tag = "animationBlock"
+			})	
+		end
 	end
 end
 function levelComplete()
@@ -634,7 +1156,31 @@ end
 							create2BS()
 						end
 					end
-
+					if (levelEnemy == 3) then
+						if (score - tempscore == 300) then
+							create3BS()
+						end
+					end
+					if (levelEnemy == 4) then
+						if (score - tempscore == 300) then
+							create4BS()
+						end
+					end
+					if (levelEnemy == 5) then
+						if (score - tempscore == 300) then
+							create5BS()
+						end
+					end
+					if (levelEnemy == 6) then
+						if (score - tempscore == 300) then
+							create6BS()
+						end
+					end
+					if (levelEnemy == 7) then
+						if (score - tempscore == 300) then
+							create7BS()
+						end
+					end
 				end
 				if ( ( obj1.myName == "ship" and obj2.myName == "asteroid" ) or
 						( obj1.myName == "asteroid" and obj2.myName == "ship" ) or
@@ -750,7 +1296,166 @@ end
 							end
 						end
 					end
+					if (levelEnemy == 3) then
+						if (bs3S. alpha>0) then
+							b3lives = b3lives - 0.5
+							if(b3lives>0) then
+								display.remove(b1hb)
+								lengthRect = (display.contentWidth*b3lives)/b3max
+								b1hb = display.newRect(uiGroup,lengthRect/2,10,lengthRect,20)
+								b1hb:setFillColor(0, 255, 0)
+								if(b3lives>b3max/2) then
+									b1hb:setFillColor(0,255,0)
 
+								elseif(b3lives<=b3max/2 and b3lives>=(b3max/2) - (b3max/3)) then
+									b1hb:setFillColor(255, 237, 0)
+								elseif(b3lives<b3max/3) then
+									b1hb:setFillColor(255, 0, 0)
+								end
+
+							elseif(b3lives==0 or b3lives< 0) then
+								display.remove(b1hb)
+							end
+							if ( b3lives == 0 or b3lives<0 ) then
+								display.remove(b1hb)
+								display.remove( bs3S )
+								b3defeat = true
+							if (levelEnemy==8) then
+								create4BS()
+							end
+							if (levelEnemy == 3) then
+								timer.performWithDelay( 100, endGameWin )
+							end
+							end
+						end
+					end
+					if (levelEnemy == 4) then
+						if (bs4S. alpha>0) then
+							b4lives = b4lives - 0.5
+							if(b4lives>0) then
+								display.remove(b1hb)
+								lengthRect = (display.contentWidth*b4lives)/b4max
+								b1hb = display.newRect(uiGroup,lengthRect/2,10,lengthRect,20)
+								b1hb:setFillColor(0, 255, 0)
+								if(b4lives>b4max/2) then
+									b1hb:setFillColor(0,255,0)
+
+								elseif(b4lives<=b4max/2 and b4lives>=(b4max/2) - (b4max/3)) then
+									b1hb:setFillColor(255, 237, 0)
+								elseif(b4lives<b4max/3) then
+									b1hb:setFillColor(255, 0, 0)
+								end
+
+							elseif(b4lives==0 or b4lives< 0) then
+								display.remove(b1hb)
+							end
+							if ( b4lives == 0 or b4lives<0 ) then
+								display.remove(b1hb)
+								display.remove( bs4S )
+								b4defeat = true
+								if (levelEnemy==8) then
+								create5BS()
+							end
+							if (levelEnemy == 4) then
+								timer.performWithDelay( 100, endGameWin )
+							end
+							end
+						end
+					end
+					if (levelEnemy == 5) then
+						b5lives = b5lives - 0.5
+						if(b5lives>0) then
+							display.remove(b1hb)
+							lengthRect = (display.contentWidth*b5lives)/b5max
+							b1hb = display.newRect(uiGroup,lengthRect/2,10,lengthRect,20)
+							b1hb:setFillColor(0, 255, 0)
+							if(b5lives>b5max/2) then
+								b1hb:setFillColor(0,255,0)
+
+							elseif(b5lives<=b5max/2 and b5lives>=(b5max/2) - (b5max/3)) then
+								b1hb:setFillColor(255, 237, 0)
+							elseif(b5lives<b5max/3) then
+								b1hb:setFillColor(255, 0, 0)
+							end
+
+						elseif(b5lives==0 or b5lives< 0) then
+							display.remove(b1hb)
+						end
+						if ( b5lives == 0 or b5lives<0 ) then
+							display.remove(b1hb)
+							display.remove( bs5S )
+							b5defeat = true
+							timer.performWithDelay( 100, endGameWin )
+						end
+					end
+					if (levelEnemy == 6) then
+						b6lives = b6lives - 0.5
+						if(b6lives>0) then
+							display.remove(b1hb)
+							lengthRect = (display.contentWidth*b6lives)/b6max
+							b1hb = display.newRect(uiGroup,lengthRect/2,10,lengthRect,20)
+							b1hb:setFillColor(0, 255, 0)
+							if(b6lives>b6max/2) then
+								b1hb:setFillColor(0,255,0)
+							elseif(b6lives<=b6max/2 and b6lives>=(b6max/2) - (b6max/3)) then
+							if (b61active == true) then
+								b61active = false
+								display.remove(bs61S)
+								b6lives = b6max
+							end
+								b1hb:setFillColor(255, 237, 0)
+							elseif(b6lives<b6max/3) then
+								b1hb:setFillColor(255, 0, 0)
+							end
+
+						elseif(b6lives==0 or b6lives< 0) then
+							display.remove(b1hb)
+						end
+						if ( b6lives == 0 or b6lives<0 ) then
+							display.remove(b1hb)
+							display.remove( bs6S )
+							b6defeat = true
+							timer.performWithDelay( 100, endGameWin )
+						end
+					end
+					if (levelEnemy == 7) then
+						b7lives = b7lives - 0.5
+						if(b5lives>0) then
+							display.remove(b1hb)
+							lengthRect = (display.contentWidth*b7lives)/b7max
+							b1hb = display.newRect(uiGroup,lengthRect/2,10,lengthRect,20)
+							b1hb:setFillColor(0, 255, 0)
+							if(b7lives==b7max/2 or b7lives==b7max/3) then
+								b7speed = 1500
+								bfLoopTimer._delay = b7speed
+								b7Inv()
+							end
+							if(b7lives>b7max/2) then
+								b7speed = 3000
+								bfLoopTimer._delay = b7speed
+								b1hb:setFillColor(0,255,0)
+
+							elseif(b7lives<b5max/2 and b7lives>(b7max/2) - (b7max/3)) then
+								b7speed = 3000
+								bfLoopTimer._delay = b7speed
+								b1hb:setFillColor(255, 237, 0)
+							elseif(b7lives<b7max/3) then
+								b7speed = 3000
+								bfLoopTimer._delay = b7speed
+								b1hb:setFillColor(255, 0, 0)
+							end
+
+						elseif(b7lives==0 or b7lives< 0) then
+							display.remove(b1hb)
+						end
+						if ( b7lives == 0 or b7lives<0 ) then
+							display.remove(b1hb)
+							display.remove( bs7S )
+							b7defeat = true
+							timer.performWithDelay( 100, endGameWin )		
+					
+						end
+					end
 				end
 			end
 		end
@@ -911,7 +1616,65 @@ end
 			bs2S:setSequence("active")
 			bs2S:play()
 		end
+		if (levelEnemy == 3) then
+			bs3S = display.newSprite( mainGroup, bs3S_sheet,bs3S_data)
+			bs3S:scale(4,4)
+			physics.addBody( bs3S, "dynamic", { radius=120, bounce = 0 } )
+			bs3S.myName = "boss"
+			bs3S.x = display.contentCenterX
+			bs3S.y = - 300
+			bs3S:setSequence("active")
+			bs3S:play()
+		end
+		if (levelEnemy == 4) then
+			bs4S = display.newSprite( mainGroup, bs4S_sheet,bs4S_data)
+			bs4S:scale(4,4)
+			physics.addBody( bs4S, "dynamic", { radius=120, bounce = 0 } )
+			bs4S.myName = "boss"
+			bs4S.x = display.contentCenterX
+			bs4S.y = - 300
+			bs4S:setSequence("active")
+			bs4S:play()
+		end
+		if (levelEnemy == 5) then
+			bs5S = display.newSprite( mainGroup, bs5S_sheet,bs5S_data)
+			bs5S:scale(4,4)
+			physics.addBody( bs5S, "dynamic", { radius=120, bounce = 0 } )
+			bs5S.myName = "boss"
+			bs5S.x = display.contentCenterX
+			bs5S.y = - 300
+			bs5S:setSequence("active")
+			bs5S:play()
+		end
+		if (levelEnemy == 6) then
+			bs61S = display.newSprite( mainGroup, bs6S_sheet,bs6S_data)
+			bs61S:scale(1.8,1.8)
+			physics.addBody( bs61S, "dynamic", { radius=60, bounce = 0 } )
+			bs61S.myName = "boss"
+			bs61S.x = display.contentCenterX+100
+			bs61S.y = - 300
+			bs61S:setSequence("active")
+			bs61S:play()
+			bs62S = display.newSprite( mainGroup, bs6S_sheet,bs6S_data)
+			bs62S:scale(1.8,1.8)
+			physics.addBody( bs62S, "dynamic", { radius=60, bounce = 0 } )
+			bs62S.myName = "boss"
+			bs62S.x = display.contentCenterX-100
+			bs62S.y = - 300
+			bs62S:setSequence("active")
+			bs62S:play()
+		end
+		if (levelEnemy == 7) then
+            bs7S = display.newSprite( mainGroup, bs7S_sheet,bs7S_data)
+            bs7S:scale(4,4)
+			physics.addBody( bs7S, "dynamic", { radius=120, bounce = 0 } )
+			bs7S.myName = "boss"
+			bs7S.x = display.contentCenterX
+			bs7S.y = - 300
+            bs7S:setSequence("active")
+            bs7S:play()
 
+		end
 
 		
 		-- Display lives and score
@@ -966,7 +1729,29 @@ end
 				bmLoopTimer = timer.performWithDelay( 2000, b2Move, 0 )
 
 			end
-
+			if (levelEnemy==3) then
+				bfLoopTimer = timer.performWithDelay( 4000, b3Fire, 0 )
+				bmLoopTimer = timer.performWithDelay( 2000, b3Move, 0 )
+				local biLoopTimer = timer.performWithDelay( math.random(2000,4000), b3Inv, 0 )
+			end
+			if (levelEnemy==4) then
+				bfLoopTimer = timer.performWithDelay( 3000, b4Fire, 0 )
+				bmLoopTimer = timer.performWithDelay( 1000, b4Move, 0 )
+				local biLoopTimer = timer.performWithDelay( math.random(1000,5000), b4Inv, 0 )
+			end
+			if (levelEnemy==5) then
+				bfLoopTimer = timer.performWithDelay( 1500, b5Fire, 0 )
+				bmLoopTimer = timer.performWithDelay( 6000, b5Move, 0 )
+				local biLoopTimer = timer.performWithDelay( 4000, b5regen, 0 )
+			end
+			if (levelEnemy==6 ) then
+				bfLoopTimer = timer.performWithDelay( 1000, b6Fire, 0 )
+				bmLoopTimer = timer.performWithDelay( 3000, b6Move, 0 )
+			end
+			if (levelEnemy==7) then
+				bfLoopTimer = timer.performWithDelay( b7speed, b7Fire, 0 )		
+				bmLoopTimer = timer.performWithDelay( 3000, b7Move, 0 )
+			end
 			
 			
 			
