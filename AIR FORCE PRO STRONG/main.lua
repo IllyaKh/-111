@@ -5,10 +5,13 @@
 --    Music and sound effect assets by Eric Matyas: http://www.soundimage.org
 
 local composer = require( "composer" )
+levelEnemy = 0
 ctrlType = 1
-levelEnemy = 1
 gamePaused = 1
-b1defeat = false
+lives = 3
+score = 0
+tempscore = 0
+bactive = false
 -- Hide status bar
 display.setStatusBar( display.HiddenStatusBar )
 

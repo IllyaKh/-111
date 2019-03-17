@@ -1,4 +1,4 @@
- mainFont = "/fonts/8bit_font.ttf"
+ mainFont = "8bit_font.ttf"
 local composer = require( "composer" )
 
 local scene = composer.newScene()
@@ -9,7 +9,7 @@ local menuSound
 -- -----------------------------------------------------------------------------------
 
 local function gotoLevels()
-	composer.gotoScene( "levels", { time=800, effect="crossFade" } )
+	composer.gotoScene( "game mod", { time=800, effect="crossFade" } )
 end
 
 local function gotoHighScores()
@@ -33,7 +33,7 @@ function scene:create( event )
 	local background = display.newImageRect( sceneGroup, "background.png", display.contentWidth, display.contentHeight )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
-
+	
 	local title = display.newImageRect( sceneGroup, "title.png", 500, 80 )
 	title.x = display.contentCenterX
 	title.y = 200

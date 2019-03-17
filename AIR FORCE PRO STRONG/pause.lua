@@ -14,6 +14,12 @@ local scene = composer.newScene()
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
 local function gotoMenu()
+	bactive = false
+		for i = #enemyTable, 1, -1 do
+		local thisAsteroid = enemyTable[i]
+		display.remove( thisAsteroid )
+		table.remove( enemyTable, i )
+	end
 	composer.gotoScene( "menu", { time=800, effect="crossFade" } )
 end
 
@@ -30,7 +36,6 @@ end
 function scene:create( event )
   
 	local sceneGroup = self.view
-	gamePaused = 1
 	
 	local background = display.newImageRect( sceneGroup, "background.png", 800, 1400 )
 	background.x = display.contentCenterX
@@ -44,10 +49,10 @@ function scene:create( event )
 	title_pro.y = 270
 
 	local playButton = display.newText( sceneGroup, "Resume", display.contentCenterX, 360, mainFont, 35 )
-    playButton:setFillColor( 255, 255, 0 )
- 
+	playButton:setFillColor( 255, 255, 0 )
+
 	local mnButton = display.newText( sceneGroup, "Menu", display.contentCenterX, 450,mainFont, 35 )
-    mnButton:setFillColor(255,255,0)
+	mnButton:setFillColor(255,255,0)
 	
 
 	mnButton:addEventListener( "tap", gotoMenu )

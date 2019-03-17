@@ -15,7 +15,9 @@ local ctrlmuse
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
 
-
+function cheat()
+	composer.gotoScene( "cheatlevels", { time=800, effect="crossFade" } )
+end
 function filev()
 	levelEnemy = 1
 	composer.gotoScene( "game", { time=800, effect="crossFade" } )
@@ -76,41 +78,89 @@ function scene:create( event )
 	fiButton:setFillColor( 255,255, 0 )
 	
 	local seButton = display.newText( sceneGroup, "2. New friends", display.contentCenterX, 270, mainFont, 25 )
-	seButton:setFillColor( 255,255, 0 )
+	if (b1defeat == true) then
+		seButton:setFillColor( 255,255, 0 )
+	end
+	if(b1defeat == false)then
+		seButton:setFillColor( 100,100, 100 )
+	end
 
 	local thButton = display.newText( sceneGroup, "3. Nice choise, pilot", display.contentCenterX, 340, mainFont, 25 )
-	thButton:setFillColor( 255, 255, 0 )
+	if (b2defeat == true) then
+		thButton:setFillColor( 255,255, 0 )
+	end
+	if(b2defeat == false)then
+		thButton:setFillColor( 100,100, 100 )
+	end
 	
 	local foButton = display.newText( sceneGroup, "4. Peanuts for you", display.contentCenterX, 410, mainFont, 25 )
-	foButton:setFillColor( 255, 255, 0 )
+	if (b3defeat == true) then
+		foButton:setFillColor( 255,255, 0 )
+	end
+	if(b3defeat == false)then
+		foButton:setFillColor( 100,100, 100 )
+	end
 
 	local fivButton = display.newText( sceneGroup, "5. Rocks in your heart", display.contentCenterX, 480, mainFont, 25 )
-	fivButton:setFillColor( 255, 255, 0 )
+	if (b4defeat == true) then
+		fivButton:setFillColor( 255,255, 0 )
+	end
+	if(b4defeat == false)then
+		fivButton:setFillColor( 100,100, 100 )
+	end
 
 	local siButton = display.newText( sceneGroup, "6. Out of ammo", display.contentCenterX, 550, mainFont, 25 )
-	siButton:setFillColor( 255, 255, 0 )
+	if (b5defeat == true) then
+		siButton:setFillColor( 255,255, 0 )
+	end
+	if(b5defeat == false)then
+		siButton:setFillColor( 100,100, 100 )
+	end
 	
 	local sevButton = display.newText( sceneGroup, "7. Dangerous cage", display.contentCenterX, 620, mainFont, 25 )
-	sevButton:setFillColor( 255, 255, 0 )
+	if (b6defeat == true) then
+		sevButton:setFillColor( 255,255, 0 )
+	end
+	if(b6defeat == false)then
+		sevButton:setFillColor( 100,100, 100 )
+	end
 	
-	local eiButton = display.newText( sceneGroup, "8. Metal and rock", display.contentCenterX, 690, mainFont, 25 )
-	eiButton:setFillColor( 255, 255, 0 )
+	local eiButton = display.newText( sceneGroup, "8. Infinity Pain", display.contentCenterX, 690, mainFont, 25 )
+	if (b7defeat == true) then
+		eiButton:setFillColor( 255,255, 0 )
+	end
+	if(b7defeat == false)then
+		eiButton:setFillColor( 100,100, 100 )
+	end
 	local mnButton = display.newText( sceneGroup, "Back", display.contentCenterX, 790, mainFont, 37 )
     mnButton:setFillColor( 255, 255, 0 )
- 
+
 	ctrlmuse = audio.loadStream( "audio/settings.mp3")
 	fiButton:addEventListener( "tap", filev )
 	if (b1defeat == true) then
 		seButton:addEventListener( "tap", selev )
 	end
-	thButton:addEventListener( "tap", thlev )
-	foButton:addEventListener( "tap", folev )
-	fivButton:addEventListener( "tap", fivlev )
-	siButton:addEventListener( "tap", silev )
-	sevButton:addEventListener( "tap", sevlev )
+	if (b2defeat == true) then
+		thButton:addEventListener( "tap", thlev )
+	end
+	if (b3defeat == true) then
+		foButton:addEventListener( "tap", folev )
+	end
+	if (b4defeat == true) then
+		fivButton:addEventListener( "tap", fivlev )
+	end
+	if (b5defeat == true) then
+		siButton:addEventListener( "tap", silev )
+	end
+	if (b6defeat == true) then
+		sevButton:addEventListener( "tap", sevlev )
+	end
+	if (b7defeat == true) then
 	eiButton:addEventListener( "tap", eilev )
+	end
 	mnButton:addEventListener("tap", gotoMenu)
-end
+	chLevel:addEventListener("tap", cheat)
+	end
 
 
 

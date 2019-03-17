@@ -40,7 +40,6 @@ local function saveScores()
     end
  
     local file = io.open( filePath, "w" )
- 
     if file then
         file:write( json.encode( scoresTable ) )
         io.close( file )
@@ -95,7 +94,7 @@ function scene:create( event )
 	local menuButton = display.newText( sceneGroup, "Back", display.contentCenterX, 810, mainFont, 44 )
     menuButton:setFillColor( 255, 255, 0  )
     menuButton:addEventListener( "tap", gotoMenu )
-	scoreSound = audio.loadStream("audio/high_sc.mp3")
+    scoreSound = audio.loadStream("audio/high_sc.mp3")
 	end
 
 
